@@ -4,8 +4,9 @@ export default function Document() {
   return (
     <Html>
       <Head>
-     <link rel="shortcut icon" href="/favicon-16x16.png" />
-    </Head>
+        <link rel="shortcut icon" href="/favicon-16x16.png" />
+        <title>My Fetchly Todos</title>
+      </Head>
       <body>
         <Main />
         <NextScript />
