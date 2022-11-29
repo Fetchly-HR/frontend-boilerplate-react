@@ -1,21 +1,29 @@
-import Header from '../components/Header'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import axios from 'axios'
+import Todo from '../components/Todo'
+import Header from '../components/Header'
+
+// const getTodos = async () => {
+//   const res = await axios.get("https://jsonplaceholder.typicode.com/posts")
+//   return res.data
+// }
 
 export default function Home() {
-  const [todos, setTodos] = useState([])
   const [open, setOpen] = useState(false)
+  const [todoTitle, setTodoTitle] = useState('')
+
   // adds a todo to to the todos Object Array
   const addTodo = () => {
     console.log('addTodo() in ./pages/index.jsx')
   }
   // add a function that marks the todo as complete using the index.
-  const markComplete = () => {
-    console.log('markComplete() in ./pages/index.jsx')
+  const toggleComplete = (id) => {
+    console.log('toggleComplete() in ./pages/index.jsx')
   }
 
   // add a function that removes the todo from the todos array using the index.
-  const deleteTodo = () => {
+  const deleteTodo = (id) => {
     console.log('deleteTodo() in ./pages/index.jsx')
   }
 
@@ -44,16 +52,16 @@ export default function Home() {
             role="list"
             className="space-y-1"
           >
-            <li
-              v-if="todos.length === 0"
-              className="px-6 py-2"
-            >
-              <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
-                <h3 className="text-2xl font-bold">
-                  Add Todos
-                </h3>
-              </div>
+            <li className="px-6 py-2">
+              {!todos.length && (
+                <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
+                  <h3 className="text-2xl font-bold">
+                    Add Todos
+                  </h3>
+                </div>
+              )}
             </li>
+          {/* Render Todos  */}
           </ul>
         </div>
       </main >
@@ -108,7 +116,7 @@ export default function Home() {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <input placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                          <input value={todoTitle} onChange={v => setTodoTitle(v.target.value)} placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </p>
                       </div>
                     </div>
