@@ -1,22 +1,50 @@
 import Header from '../components/Header'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+
+
 
 export default function Home() {
   const [todos, setTodos] = useState([])
   const [open, setOpen] = useState(false)
+
+  const [todoTitle, setTodoTitle] = useState('')
+
+  const [fetchedData, setFetchedData] = useState([])
+
+  async function loadData() {
+    fetch('https://cat-fact.herokuapp.com/facts')
+      .then(response => response.json())
+      .then(data => setFetchedData(data))
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   // adds a todo to to the todos Object Array
   const addTodo = () => {
-    console.log('addTodo() in ./pages/index.jsx')
+    const todo = {
+      title: todoTitle,
+      completed: false
+    }
+
+    setTodos(prev => [...prev, todo])
+    setTodoTitle('')
+    setOpen(false)
   }
   // add a function that marks the todo as complete using the index.
-  const markComplete = () => {
-    console.log('markComplete() in ./pages/index.jsx')
+  const markComplete = (index) => {
+    setTodos(prev => {
+      const newTodos = [...prev]
+      newTodos[index].completed = true
+      return newTodos
+    })
   }
 
   // add a function that removes the todo from the todos array using the index.
-  const deleteTodo = () => {
-    console.log('deleteTodo() in ./pages/index.jsx')
+  const deleteTodo = (index) => {
+    setTodos(prev => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -44,17 +72,31 @@ export default function Home() {
             role="list"
             className="space-y-1"
           >
-            <li
-              v-if="todos.length === 0"
-              className="px-6 py-2"
-            >
-              <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
-                <h3 className="text-2xl font-bold">
-                  Add Todos
-                </h3>
-              </div>
-            </li>
+            {todos.length === 0 ? 
+              <li className="px-6 py-2">
+                <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
+                  <h3 className="text-2xl font-bold">
+                    Add Todos
+                  </h3>
+                </div>
+              </li>
+               : todos.map((todo, i) => 
+               <li key={i} onClick={() => markComplete(i)}>
+                <div className='flex justify-between bg-slate-500 px-2 py-1 rounded items-center'>
+                  <span className='text-white capitalize'>
+                  {todo.title} - {todo.completed ? 'Completed' : 'Not Completed'}
+                  </span>
+                  <button 
+                  className='add-todo px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-md active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-blue'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteTodo(i)
+                  }}>delete</button>
+                  </div>
+                </li>
+              )}
           </ul>
+          <div>{fetchedData.map((el) => <div key={el._id}>{el.text}</div>)}</div>
         </div>
       </main >
       <Transition.Root show={open} as={Fragment}>
@@ -108,7 +150,11 @@ export default function Home() {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <input placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                          <input 
+                          value={todoTitle}
+                          onChange={(e) => setTodoTitle(e.target.value)}
+                          placeholder='My Todo Title' 
+                          className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </p>
                       </div>
                     </div>
