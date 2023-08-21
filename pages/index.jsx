@@ -82,23 +82,23 @@ export default function Home() {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <Dialog.Panel className="relative transform overflow-hidden roundedLg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                   <div>
                     <div className="mt-3 sm:mt-5">
-                      <Dialog.Title as="h3" className="">
-                        <h1 class="text-2xl font-bold">
+                      <Dialog.Title as="span" className="">
+                        <h1 className="text-2xl font-bold">
                           Add Todo
                         </h1>
                         <button
                           onClick={() => setOpen((false))}
-                          class="absolute top-0 right-0 p-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700"
+                          className="absolute top-0 right-0 p-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700"
                         >
                           <svg
-                            class="h-6 w-6"
+                            className="h-6 w-6"
                             fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
                           >
