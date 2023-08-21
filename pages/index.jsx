@@ -1,14 +1,35 @@
 import Header from '../components/Header'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import axios from 'axios';
 
 export default function Home() {
-  const [todos, setTodos] = useState([])
-  const [open, setOpen] = useState(false)
+  const [data, setData] = useState({});
+  const [todo, setTodo] = useState('');
+  const [todos, setTodos] = useState([]);
+  const [open, setOpen] = useState(false);
+
   // adds a todo to to the todos Object Array
-  const addTodo = () => {
-    console.log('addTodo() in ./pages/index.jsx')
-  }
+   const addTodo = () => {
+    const url = "https://jsonplaceholder.typicode.com/posts";
+
+      const requestData = {
+        title: todo
+      };
+  
+      axios.post(url, requestData)
+      .then(response => {
+        setData(response.data);
+  
+        setTodos([...todos, response.data]);
+
+        //clean the input
+        setTodo('')
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    };
   // add a function that marks the todo as complete using the index.
   const markComplete = () => {
     console.log('markComplete() in ./pages/index.jsx')
@@ -18,6 +39,11 @@ export default function Home() {
   const deleteTodo = () => {
     console.log('deleteTodo() in ./pages/index.jsx')
   }
+
+  const handleChange = (e) => {
+  
+    setTodo(e.target.value);
+  };
 
   return (
     <>
@@ -44,8 +70,9 @@ export default function Home() {
             role="list"
             className="space-y-1"
           >
+            {
+              todos.length === 0 ? (
             <li
-              v-if="todos.length === 0"
               className="px-6 py-2"
             >
               <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
@@ -54,6 +81,16 @@ export default function Home() {
                 </h3>
               </div>
             </li>
+              ):(
+                todos.map((todoItem, index) => (
+                  <li key={index} className="px-6 py-2">
+                    <div className="block p-5 w-full rounded-md border-gray-300 bg-white border-2 border-solid text-center text-gray-500">
+                      <h3 className="text-2xl font-bold">{todoItem.title}</h3>
+                    </div>
+                  </li>
+                ))
+              )
+            }
           </ul>
         </div>
       </main >
@@ -108,7 +145,11 @@ export default function Home() {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <input placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                          <input 
+                          placeholder='My Todo Title' 
+                          className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          value={todo} onChange={handleChange}
+                          />
                         </p>
                       </div>
                     </div>
