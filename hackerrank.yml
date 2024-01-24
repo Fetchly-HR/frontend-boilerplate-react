@@ -3,7 +3,7 @@ configuration:
     has_webserver: true
     scoring:
         # command: yarn install && rm -rf ./junit.xml && yarn test --watchAll=false --verbose --testResultsProcessor ./node_modules/jest-junit
-        command: yarn install && rm -rf ./results.xml && yarn test
+        command: yarn install && yarn playwright install && rm -rf ./results.xml && yarn test
         files:
             - results.xml
         # Define hidden test cases and declare file paths below to evaluate candidates' submissions.
@@ -20,6 +20,6 @@ configuration:
         default_open_files:
             - pages/index.jsx
         project_menu:
-            run: yarn start
-            install: yarn install
+            install: yarn install && yarn playwright install
+            run: yarn dev
             test: yarn test
