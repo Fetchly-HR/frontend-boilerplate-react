@@ -5,7 +5,6 @@ export default function Document() {
     <Html>
       <Head>
         <link rel="shortcut icon" href="/favicon-16x16.png" />
-        <title>My Fetchly Todos</title>
       </Head>
       <body>
         <Main />

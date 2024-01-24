@@ -1,16 +1,20 @@
 import Header from '../components/Header'
+import Todo from '../components/Todo'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+
+const API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
 export default function Home() {
   const [todos, setTodos] = useState([])
   const [open, setOpen] = useState(false)
+
   // adds a todo to to the todos Object Array
   const addTodo = () => {
     console.log('addTodo() in ./pages/index.jsx')
   }
   // add a function that marks the todo as complete using the index.
-  const markComplete = () => {
+  const toggleComplete = () => {
     console.log('markComplete() in ./pages/index.jsx')
   }
 
@@ -21,6 +25,7 @@ export default function Home() {
 
   return (
     <>
+      <title>My Fetchly Todos</title>
       <Header />
       <main>
         <header className="bg-white shadow">
@@ -40,20 +45,19 @@ export default function Home() {
           </div>
         </header>
         <div className="max-w-7xl mx-auto my-5 px-4 py-6">
+          {!todos.length && (
+            <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
+              <h3 className="text-2xl font-bold">
+                Add Todos
+              </h3>
+            </div>
+          )
+          }
           <ul
             role="list"
-            className="space-y-1"
+            className="todo-list space-y-1"
           >
-            <li
-              v-if="todos.length === 0"
-              className="px-6 py-2"
-            >
-              <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
-                <h3 className="text-2xl font-bold">
-                  Add Todos
-                </h3>
-              </div>
-            </li>
+            {todos && todos.map((mappedTodo, index) => (<Todo index={index} todo={mappedTodo} deleteTodo={deleteTodo} toggleComplete={toggleComplete} />))}
           </ul>
         </div>
       </main >
@@ -108,13 +112,14 @@ export default function Home() {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <input placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                          <input data-testid="todo-title-input" placeholder='My Todo Title' className="mt-5 shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </p>
                       </div>
                     </div>
                   </div>
                   <div className="mt-5 sm:mt-6">
                     <button
+                      data-testid="add-todo-button"
                       type="button"
                       className="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                       onClick={() => addTodo()}
