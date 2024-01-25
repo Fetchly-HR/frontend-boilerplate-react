@@ -3,29 +3,15 @@ import Todo from '../components/Todo'
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+// This API accepts GET, POST, PUT and DELETE requests
 const API_URL = 'https://jsonplaceholder.typicode.com/todos'
 
 export default function Home() {
-  const [todos, setTodos] = useState([])
   const [open, setOpen] = useState(false)
-
-  // adds a todo to to the todos Object Array
-  const addTodo = () => {
-    console.log('addTodo() in ./pages/index.jsx')
-  }
-  // add a function that marks the todo as complete using the index.
-  const toggleComplete = () => {
-    console.log('markComplete() in ./pages/index.jsx')
-  }
-
-  // add a function that removes the todo from the todos array using the index.
-  const deleteTodo = () => {
-    console.log('deleteTodo() in ./pages/index.jsx')
-  }
 
   return (
     <>
-      <title>My Fetchly Todos</title>
+      <title>Fetchly Todos</title>
       <Header />
       <main>
         <header className="bg-white shadow">
@@ -35,9 +21,10 @@ export default function Home() {
                 Todos
               </h1>
               <button
-                onClick={() => setOpen((prev) => !prev)}
-                id="add-todo-button"
+                onClick={() => setOpen((prev) => prev)}
+                id="new-todo-button"
                 className="add-todo px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-md active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-blue"
+                data-testid="new-todo-button"
               >
                 New Todo
               </button>
@@ -45,19 +32,15 @@ export default function Home() {
           </div>
         </header>
         <div className="max-w-7xl mx-auto my-5 px-4 py-6">
-          {!todos.length && (
-            <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
-              <h3 className="text-2xl font-bold">
-                Add Todos
-              </h3>
-            </div>
-          )
-          }
+          <div className="block p-5 w-full rounded border-gray-300 bg-transparent border-2 border-dashed text-center text-gray-500">
+            <h3 className="text-2xl font-bold">
+              No Todos yet 🍃
+            </h3>
+          </div>
           <ul
             role="list"
             className="todo-list space-y-1"
           >
-            {todos && todos.map((mappedTodo, index) => (<Todo index={index} todo={mappedTodo} deleteTodo={deleteTodo} toggleComplete={toggleComplete} />))}
           </ul>
         </div>
       </main >

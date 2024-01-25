@@ -1,13 +1,14 @@
-export default function Todo({ index, todo, deleteTodo, toggleComplete }) {
+export default function Todo({ todo, deleteTodo, toggleComplete }) {
   return (
     <li
       key={todo.id}
+      id={`todo-${todo.id}`}
       className="todo block p-5 w-full rounded border-2 border-gray-300 bg-white text-black"
     >
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-2xl font-bold">
-            {`${index + 1}. ${todo.title}`}
+            {`${todo.id}. ${todo.title}`}
           </h3>
           <p className="space-x-2 my-2">
             {todo.completed ? (
@@ -26,24 +27,25 @@ export default function Todo({ index, todo, deleteTodo, toggleComplete }) {
           </p>
         </div>
         <div className="flex items-center space-x-4 text-center align-center">
-          {todo.completed ? (
-            <button
-              className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => toggleComplete(todo.id)}
-            >
-              Incomplete
-            </button>
-          ) : (
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => toggleComplete(todo.id)}
-            >
-              Complete
-            </button>
-          )}
+          <button
+            className={`${todo.completed ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 hover:bg-blue-700'} text-white font-bold py-2 px-4 rounded`}
+            onClick={() => toggleComplete(todo.id, todo.complete)}
+            data-testid={`toggle-todo-${todo.id}`}
+            id={`toggle-todo-${todo.id}`}
+          >
+            {
+              todo.completed ? (
+                "Completed"
+              ) : (
+                "Incomplete"
+              )
+            }
+          </button>
+
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => deleteTodo(todo.id)}
+            data-testid={`delete-todo-${todo.id}`}
           >
             Delete
           </button>
